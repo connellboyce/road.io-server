@@ -8,7 +8,8 @@ class App extends Component {
         super(props);
         this.state = {
             error: null,
-            isLoaded: false
+            isLoaded: false,
+            showMap: false
         };
     }
 
@@ -18,33 +19,47 @@ class App extends Component {
         });
     }
 
-    render() {
-        const { error, isLoaded } = this.state;
-
-            return (
-                <div className="App">
-                    <header className="App-header">
-                        <img src={logo} className="App-logo" alt="logo"/>
-                        <p>
-                            Click here to enter
-                        </p>
-                        <a href="./App.css" className="button1">Button</a>
-                        <a
-                            className="App-link"
-                            href="https://reactjs.org"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Learn React!
-                        </a>
-                        <Map />
-                    </header>
-                </div>
-            );
-
+    showTheMap() {
+        this.setState(state => ({
+            showMap: true
+        }));
+        console.log("setting state to true");
     }
 
-
+    render() {
+        const { error, isLoaded, showMap } = this.state;
+        if (error == null) {
+            if (showMap) {
+                return (
+                    <div className="App">
+                        <header className="App-header">
+                            <Map/>
+                        </header>
+                    </div>
+                );
+            } else {
+                return (
+                    <div className="App">
+                        <header className="App-header">
+                            <img src={logo} className="App-logo" alt="logo"/>
+                            <p>
+                                Click here to enter
+                            </p>
+                            <a className="button1" onClick={this.showTheMap.bind(this)}>Button</a>
+                            <a
+                                className="App-link"
+                                href="https://reactjs.org"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Learn React!
+                            </a>
+                        </header>
+                    </div>
+                );
+            }
+        }
+    }
 }
 
 export default App;
