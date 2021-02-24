@@ -32,9 +32,7 @@ class App extends Component {
             if (showMap) {
                 return (
                     <div className="App">
-                        <header className="App-header">
-                            <Map/>
-                        </header>
+                        <Map></Map>
                     </div>
                 );
             } else {
