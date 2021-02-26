@@ -44,14 +44,6 @@ class App extends Component {
                                 Click here to enter
                             </p>
                             <a className="button1" onClick={this.showTheMap.bind(this)}>Button</a>
-                            <a
-                                className="App-link"
-                                href="https://reactjs.org"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                Learn React!
-                            </a>
                         </header>
                     </div>
                 );
