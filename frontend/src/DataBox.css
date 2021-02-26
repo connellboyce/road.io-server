@@ -1,0 +1,59 @@
+.DataBox {
+    background-color: white;
+    border-style:solid;
+    border-color: black;
+    margin: 10px;
+    padding: 10px;
+    height: 12cm;
+    width: 10cm;
+    z-index: 200;
+    position:fixed;
+    top:50px;
+    left:50px;
+}
+.DataBox form
+{
+    display: inline-table;
+}
+.DataBox h2{
+    text-align: center;
+}
+
+label
+{
+    display: inline-block;
+    text-align: left;
+    padding-right: 10px;
+
+}
+.DataBox input
+{
+    display: flex;
+    text-align: left;
+    margin-top: 10px;
+    width: 230px;
+    height: 10px;
+    font-size: 15px;
+    padding: 5px;
+}
+#checkbox
+{
+    display: inline-block;
+    width: 20px;
+}
+#submit
+{
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 20px;
+}
+#submit:hover
+{
+    background-color: white;
+    color: #4CAF50;
+}
+

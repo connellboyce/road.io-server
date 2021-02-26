@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-
+import DataBox from './DataBox';
 class Map extends Component {
     mapRef = React.createRef();
 
@@ -112,7 +112,10 @@ class Map extends Component {
     render() {
         const { error, isLoaded } = this.state;
             return (
-                <div ref={this.mapRef} style={{ height: "900px" }} />
+                <div ref={this.mapRef} style={{ height: "900px" }}>
+                <DataBox />
+                </div>
+
             );
     }
 
