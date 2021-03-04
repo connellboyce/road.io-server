@@ -12,14 +12,27 @@ class Map extends Component {
         super(props);
         this.state = {
             error: null,
-            isLoaded: false
+            isLoaded: false,
+            hereKey: null
         };
     }
 
     componentDidMount() {
+        //Synchronous GET request to Spring Boot backend
+        //Requires the Spring Boot app to be running!
+        var data = "";
+        const REQUEST = new XMLHttpRequest();
+        REQUEST.open("GET", "http://localhost:8787/secrets/here",false);
+        REQUEST.onload = function() {
+            //Parse JSON
+            data = this.response;
+        }
+        REQUEST.send();
+
+        //Initial HERE connection with requested API key
         const H = window.H;
         const platform = new H.service.Platform({
-            apikey: "OUR-API-KEY"
+            apikey: data
         });
 
         const defaultLayers = platform.createDefaultLayers();
@@ -110,7 +123,7 @@ class Map extends Component {
     }
 
     render() {
-        const { error, isLoaded } = this.state;
+        const { error, isLoaded, hereKey } = this.state;
             return (
                 <div ref={this.mapRef} style={{ height: "900px" }}>
                 <DataBox />
