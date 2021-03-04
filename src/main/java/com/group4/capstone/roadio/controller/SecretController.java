@@ -14,9 +14,14 @@ public class SecretController {
     @Value("${app.hereapi.key}")
     private String hereAPIKey;
 
+    @Value("${app.googleapi.key}")
+    private String googleAPIKey;
+
     @GetMapping("/here")
     public String getHereKey() {
         return hereAPIKey;
     }
 
+    @GetMapping("/google")
+    public String getGoogleAPIKey() { return googleAPIKey; }
 }
