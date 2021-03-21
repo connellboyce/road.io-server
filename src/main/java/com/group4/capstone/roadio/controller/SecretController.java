@@ -17,6 +17,9 @@ public class SecretController {
     @Value("${app.googleapi.key}")
     private String googleAPIKey;
 
+    @Value("${app.nrel.key}")
+    private String nrelKey;
+
     @GetMapping("/here")
     public String getHereKey() {
         return hereAPIKey;
@@ -24,4 +27,7 @@ public class SecretController {
 
     @GetMapping("/google")
     public String getGoogleAPIKey() { return googleAPIKey; }
+
+    @GetMapping("/nrel")
+    public String getNrelKey() { return nrelKey; }
 }
