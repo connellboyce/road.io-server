@@ -34,6 +34,13 @@ class DataBox extends React.Component {
                     <input type="text" placeholder="80%"/>
                     <label htmlFor="">Range (miles)</label>
                     <input type="text" placeholder="200"/>
+
+                    <label htmlFor=""> Make and Model </label>
+                    <select class="box">
+                        <option value="Chevy Bolt"> Chevy Bolt</option>
+                        <option value="Tesla Model 3"> Tesla Model 3</option>
+                    </select>
+
                     <button type="submit" id = "submit">Submit</button>
 
                 </form>

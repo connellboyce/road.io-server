@@ -43,6 +43,7 @@ label
 }
 #submit
 {
+    display: grid;
     background-color: #4CAF50;
     border: none;
     color: white;
@@ -50,6 +51,18 @@ label
     text-align: center;
     font-size: 16px;
     margin-top: 20px;
+
+}
+.box
+{
+    display: inline-block;
+    width: 125px;
+    height: 30px;
+    border: 1px solid #999;
+    font-size: 16px;
+    color: black;
+    background-color: #eee;
+    border-radius: 5px;
 }
 #submit:hover
 {
