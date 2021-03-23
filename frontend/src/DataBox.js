@@ -14,11 +14,10 @@ class DataBox extends React.Component {
 
    render() {
 
-
         return (
             <div className="DataBox">
                 <form>
-                    <h2 type="">Home-Title</h2>
+                    <h2 type="">Trip Planner</h2>
                     <label htmlFor="">Starting point</label>
                     <input type="text" name="startingPoint"
                            placeholder="Pollock Road, University Park, PA"/>
@@ -36,7 +35,7 @@ class DataBox extends React.Component {
                     <input type="text" placeholder="200"/>
 
                     <label htmlFor=""> Make and Model </label>
-                    <select class="box">
+                    <select className="box">
                         <option value="Chevy Bolt"> Chevy Bolt</option>
                         <option value="Tesla Model 3"> Tesla Model 3</option>
                     </select>
