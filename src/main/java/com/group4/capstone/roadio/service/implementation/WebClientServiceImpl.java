@@ -26,7 +26,7 @@ public class WebClientServiceImpl implements WebClientService {
         return webClient.get()
                 .uri(url)
                 .retrieve()
-                .bodyToMono(Object.class)
+                .bodyToMono(String.class)
                 .block();
     }
 
