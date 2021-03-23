@@ -16,6 +16,7 @@ class Map extends Component {
             isLoaded: false,
             hereKey: null
         };
+        this.displayRoute = this.displayRoute.bind(this);
     }
 
     componentDidMount() {
@@ -124,7 +125,7 @@ class Map extends Component {
         const { error, isLoaded, hereKey } = this.state;
             return (
                 <div ref={this.mapRef} style={{ height: window.innerHeight }}>
-                <DataBox />
+                <DataBox displayRoute={this.displayRoute}/>
                 </div>
 
             );
