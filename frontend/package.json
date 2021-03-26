@@ -34,5 +34,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@here/maps-api-for-javascript": "^1.24.0"
   }
 }
