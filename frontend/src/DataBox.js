@@ -67,7 +67,8 @@ class DataBox extends React.Component {
         });
     }
 
-    onSubmitForm(props) {
+    onSubmitForm() {
+        let lclProps = this.props;
         var carInfo = this.state.carInfo.split("/");
         var origin = this.state.form.origin;
         var destination = this.state.form.destination;
@@ -84,10 +85,10 @@ class DataBox extends React.Component {
             const ROUTE_REQUEST = new XMLHttpRequest();
             ROUTE_REQUEST.open("GET", "http://localhost:8787/api/stations/along/"+origin+"/"+outletType+"/"+destination+"/"+speedTable+"/"+currentCharge+"/"+maxCharge+"/"+chargingCurve+"/"+maxChargeAfterChargingStation, true);
             ROUTE_REQUEST.onload = function() {
-                routeResponse = this.response;
+                routeResponse = JSON.parse(this.response);
                 console.log(routeResponse)
                 //BROKEN
-                props.displayRoute(routeResponse);
+                lclProps.displayRoute(routeResponse);
             }
             ROUTE_REQUEST.send();
         } else {
