@@ -15,6 +15,6 @@ public class AutocompleteController {
 
     @GetMapping("/{partial}/{country}")
     public String complete(@PathVariable("partial") String partial, @PathVariable("country") String country) {
-        return autocompleteService.complete(partial, country).toString();
+        return autocompleteService.complete(partial, country);
     }
 }
