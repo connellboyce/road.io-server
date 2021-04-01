@@ -37,13 +37,19 @@ class App extends Component {
                 );
             } else {
                 return (
+
                     <div className="App">
                         <header className="App-header">
-                            <img src={logo} className="App-logo" alt="logo"/>
-                            <p>
-                                Click here to enter
+
+                            <p id="introduction">
+                               <animate id="anxiety"> Anxiety-free </animate> driving with
+
                             </p>
-                            <a className="button1" onClick={this.showTheMap.bind(this)}>Button</a>
+                            <p>
+                            <animate id="road"> road.i</animate>
+                            <img src={logo} className="App-logo" alt="logo"/>
+                        </p>
+                            <a className="button1" onClick={this.showTheMap.bind(this)}>Get started</a>
                         </header>
                     </div>
                 );

@@ -1,5 +1,6 @@
 import React from 'react';
 import "./DataBox.css";
+import logo from "./globe-png-9acqaaMTM.png";
 
 class DataBox extends React.Component {
     constructor(props) {
@@ -103,7 +104,13 @@ class DataBox extends React.Component {
         return (
             <div className="DataBox">
                 <form>
-                    <h2 type="">Trip Planner</h2>
+                    <div id="logo">
+                        <h2 type="">road.i<img src={logo} className="DataBox-logo" alt="logo"/></h2>
+
+                    </div>
+
+
+
                     <label htmlFor="">Starting point</label>
                     <input type="text" onChange={this.changeOrigin} name="startingPoint"
                            placeholder="Pollock Road, University Park, PA"/>

@@ -112,7 +112,7 @@ class Map extends Component {
 
                 // Create a marker for the start point:
                 let startMarker = new lclState.H.map.Marker(section.departure.place.location);
-                let htmlMsg = '<div><h2>This is a cool charging station right here!</h2></div>';
+                let htmlMsg = '<div><h2>CHARGING STATION</h2></div>';
                 startMarker.setData(htmlMsg);
 
                 group.addObject(startMarker);
