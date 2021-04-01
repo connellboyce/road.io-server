@@ -15,7 +15,7 @@ public class AutocompleteServiceImpl implements AutocompleteService {
     private String hereKey;
 
     @Override
-    public Object complete(String partial, String country) {
+    public String complete(String partial, String country) {
         String url = "https://autosuggest.search.hereapi.com/v1/autosuggest?q="+partial.replace(" ", "+")+"&at=40.599830,-97.120535&in=countryCode:"+country+"&apiKey="+hereKey;
         return webClient.get()
                 .uri(url)
