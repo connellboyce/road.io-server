@@ -20,10 +20,38 @@ class DataBox extends React.Component {
         this.changeOrigin = this.changeOrigin.bind(this);
         this.changeDestination = this.changeDestination.bind(this);
         this.changeCharge = this.changeCharge.bind(this);
+        this.toggleOriginSearch = this.toggleOriginSearch.bind(this);
+        this.toggleDestinationSearch = this.toggleDestinationSearch.bind(this);
     }
     HandleChange()
     {
         this.setState({disabled: !this.state.disabled})
+    }
+
+    toggleOriginSearch() {
+        let originFragment = this.state.form.origin;
+        let originResponse = "";
+
+        const ORIGIN_SEARCH_REQUEST = new XMLHttpRequest();
+        ORIGIN_SEARCH_REQUEST.open("GET", "http://localhost:8787/api/autocomplete/"+originFragment+"/USA", false);
+        ORIGIN_SEARCH_REQUEST.onload = function() {
+            originResponse = JSON.parse(this.response);
+            console.log(originResponse);
+        }
+        ORIGIN_SEARCH_REQUEST.send();
+    }
+
+    toggleDestinationSearch() {
+        let destinationFragment = this.state.form.destination;
+        let destinationResponse = "";
+
+        const DESTINATION_SEARCH_REQUEST = new XMLHttpRequest();
+        DESTINATION_SEARCH_REQUEST.open("GET", "http://localhost:8787/api/autocomplete/"+destinationFragment+"/USA", false);
+        DESTINATION_SEARCH_REQUEST.onload = function() {
+            destinationResponse = JSON.parse(this.response);
+            console.log(destinationResponse);
+        }
+        DESTINATION_SEARCH_REQUEST.send();
     }
 
     changeFormValue(e) {
@@ -114,12 +142,15 @@ class DataBox extends React.Component {
                     <label htmlFor="">Starting point</label>
                     <input type="text" onChange={this.changeOrigin} name="startingPoint"
                            placeholder="Pollock Road, University Park, PA"/>
-
+                    <button type="button" class="search" onClick={this.toggleOriginSearch}>Search</button>
+                    <br/>
 
                     <label htmlFor="">Ending point</label>
                     <input type="checkbox" id="checkbox" onChange={this.HandleChange.bind(this)}/>
                     <input type="text" onChange={this.changeDestination} name="endingPoint"
                            placeholder="Tampa, FL" disabled={(!this.state.disabled)}/>
+                    <button type="button" class="search" onClick={this.toggleDestinationSearch}>Search</button>
+                    <br/>
 
                     <h4>EV Specs</h4>
                     <label htmlFor="">Current State of Charge</label>
