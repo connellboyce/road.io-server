@@ -78,16 +78,29 @@ class DataBox extends React.Component {
         var maxCharge = carInfo[2];
         var chargingCurve = carInfo[3];
         var maxChargeAfterChargingStation = carInfo[4];
+        var range = carInfo[5];
         var routeResponse;
         if (this.state.disabled === false) {
-            this.props.getStations();
-        } else if (this.state.disabled === true) {
+            var coordinates = origin.split(",");
+            const ROUTE_REQUEST = new XMLHttpRequest();
+            ROUTE_REQUEST.open("GET", "http://localhost:8787/api/stations/near/"+coordinates[0]+"/"+coordinates[1]+"/"+"5", true);
+            ROUTE_REQUEST.onload = function() {
+                routeResponse = JSON.parse(this.response);
+                //For dev. only
+                console.log(routeResponse);
+
+                lclProps.getCgStations(origin, range, routeResponse);
+            }
+            ROUTE_REQUEST.send();
+        }
+        else if (this.state.disabled === true) {
             const ROUTE_REQUEST = new XMLHttpRequest();
             ROUTE_REQUEST.open("GET", "http://localhost:8787/api/stations/along/"+origin+"/"+outletType+"/"+destination+"/"+speedTable+"/"+currentCharge+"/"+maxCharge+"/"+chargingCurve+"/"+maxChargeAfterChargingStation, true);
             ROUTE_REQUEST.onload = function() {
                 routeResponse = JSON.parse(this.response);
+                //For dev. only
                 console.log(routeResponse)
-                //BROKEN
+
                 lclProps.displayRoute(routeResponse);
             }
             ROUTE_REQUEST.send();
@@ -121,8 +134,9 @@ class DataBox extends React.Component {
                     <label htmlFor=""> Make and Model </label>
                     <select className="box" onChange={this.changeFormValue}>
                         <option value=""></option>
-                        <option value="iec62196Type1Combo/110,0.165/60/0,50,9,52,12,54,15,54,18,54,21,54,24,55,27,55,30,55,33,37,36,37,39,37,42,23,45,23,48,23,51,16,54,16,57,10,60,4/60"> Chevy Bolt</option>
-                        <option value="tesla,iec62196Type1Combo/110,0.15/79/0,50,7.9,100,15.8,120,23.7,120,31.6,120,39.5,120,47.4,90,55.3,80,63.2,55,71.1,30,79,5/79"> Tesla Model 3</option>
+                        <option value="iec62196Type1Combo/110,0.165/60/0,50,9,52,12,54,15,54,18,54,21,54,24,55,27,55,30,55,33,37,36,37,39,37,42,23,45,23,48,23,51,16,54,16,57,10,60,4/60/383023.9"> Chevy Bolt 2017-2019</option>
+                        <option value="tesla,iec62196Type1Combo/110,0.15/79/0,50,7.9,100,15.8,120,23.7,120,31.6,120,39.5,120,47.4,90,55.3,80,63.2,55,71.1,30,79,5/79/498896.6"> Tesla Model 3 Long Range</option>
+                        <option value="iec62196Type1Combo/110,0.131/28/0,40,2.8,43,5.6,44,8.4,45,11.2,45,14,46,16.8,47,19.6,48,22.4,45,25.2,23,28,5/28/199558.7"> Hyundai Ioniq Electric</option>
                     </select>
 
                     <button type="button" id = "submit" onClick={this.onSubmitForm}>Submit</button>

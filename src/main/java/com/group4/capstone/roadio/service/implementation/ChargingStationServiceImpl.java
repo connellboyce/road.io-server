@@ -34,8 +34,8 @@ public class ChargingStationServiceImpl implements ChargingStationService {
     }
 
     @Override
-    public String getStationsNearMe(String location, String radius) {
-        String url = "https://developer.nrel.gov/api/alt-fuel-stations/v1/nearest.json?location="+location+"&radius="+radius+"&api_key="+nrelKey;
+    public String getStationsNearMe(String latitude, String longitude, String radius) {
+        String url = "https://developer.nrel.gov/api/alt-fuel-stations/v1/nearest.json?latitude="+latitude+"&longitude="+longitude+"&radius="+radius+"&api_key="+nrelKey+"&fuel_type=ELEC";
         return webClient.get()
                 .uri(url)
                 .retrieve()
