@@ -33,8 +33,6 @@ class Map extends Component {
 
         //Initial HERE connection with requested API key
         const H = window.H;
-        //fix state
-        // this.state.H = H;
 
         const platform = new H.service.Platform({
             apikey: data
@@ -56,7 +54,7 @@ class Map extends Component {
 
         // MapEvents enables the event system
         // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
-        // This variable is unused and is present for explanatory purposes
+        // This variable is unused and is present for explanatory purposes - HERE
         const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
 
         // Create the default UI components to allow the user to interact with them
@@ -72,7 +70,7 @@ class Map extends Component {
     displayRoute(result) {
         //Clear routes
         this.state.map.removeObjects(this.state.map.getObjects());
-        // ensure that at least one route was found
+        // Ensure that at least one route was found
         if (result.routes.length) {
             //Info Bubble for charging stations
             var group = new this.state.H.map.Group();
@@ -102,43 +100,73 @@ class Map extends Component {
                 //Edit charging station pop up
                 if (section.departure.place.type == "chargingStation") {
 
+                    let stationName = "";
+                    let tempStationName = section.departure.place.name;
+                    if (tempStationName == undefined) {
+                        stationName = "Charging Station";
+                    } else {
+                        stationName = tempStationName;
+                    }
+                    let stationLocation = section.departure.place.location.lat + ", " +
+                        section.departure.place.location.lng;
 
-                let stationName = "";
-                let tempStationName = section.arrival.place.name;
-                if (tempStationName == undefined) {
-                    stationName = "Charging Station";
-                } else {
-                    stationName = tempStationName;
-                }
-                let stationLocation = section.arrival.place.location.lat + ", " +
-                    section.arrival.place.location.lng;
-
-                var htmlMsg = document.createElement("div");
-                htmlMsg.id = "htmlMsg";
-                let header = document.createElement('h2');
-                header.innerText = stationName;
-                header.id = "header";
-                htmlMsg.appendChild(header);
-                let textNode = document.createTextNode(stationLocation);
-                htmlMsg.appendChild(textNode);
+                    let htmlMsg = document.createElement("div");
+                    htmlMsg.id = "htmlMsg";
+                    let header = document.createElement('h2');
+                    header.innerText = stationName;
+                    header.id = "header";
+                    htmlMsg.appendChild(header);
+                    let textNode = document.createTextNode(stationLocation);
+                    htmlMsg.appendChild(textNode);
 
 
-                startMarker.setData(htmlMsg);
+                    startMarker.setData(htmlMsg);
                 }
                 else {
-                    startMarker.setData("Start.");
+                    let htmlMsg = document.createElement("div");
+                    htmlMsg.id = "htmlMsg";
+                    let header = document.createElement('h2');
+                    header.innerText = "Start";
+                    header.id = "header";
+                    htmlMsg.appendChild(header);
+                    startMarker.setData(htmlMsg);
                 }
 
                 group.addObject(startMarker);
 
                 // Create a marker for the end point:
+                // This process has to be done for both the section.departure and section.arrival, or the 1st charging station will be missing.
                 let endMarker = new lclState.H.map.Marker(section.arrival.place.location);
 
                 if (section.arrival.place.type == "chargingStation") {
+                    let stationName = "";
+                    let tempStationName = section.arrival.place.name;
+                    if (tempStationName == undefined) {
+                        stationName = "Charging Station";
+                    } else {
+                        stationName = tempStationName;
+                    }
+                    let stationLocation = section.arrival.place.location.lat + ", " +
+                        section.arrival.place.location.lng;
+
+                    let htmlMsg = document.createElement("div");
+                    htmlMsg.id = "htmlMsg";
+                    let header = document.createElement('h2');
+                    header.innerText = stationName;
+                    header.id = "header";
+                    htmlMsg.appendChild(header);
+                    let textNode = document.createTextNode(stationLocation);
+                    htmlMsg.appendChild(textNode);
                     endMarker.setData(htmlMsg);
                 }
                 else {
-                    endMarker.setData("End.");
+                    let htmlMsg = document.createElement("div");
+                    htmlMsg.id = "htmlMsg";
+                    let header = document.createElement('h2');
+                    header.innerText = "End";
+                    header.id = "header";
+                    htmlMsg.appendChild(header);
+                    endMarker.setData(htmlMsg);
                 }
 
                 group.addObject(endMarker);
@@ -149,13 +177,12 @@ class Map extends Component {
                 lclState.map.getViewModel().setLookAtData({bounds: routeLine.getBoundingBox()});
             });
         }
-        
     };
 
     getCgStations(location, range, result) {
-        let coordinates = location.split(",");
-        let lat = coordinates[0];
-        let lon = coordinates[1];
+
+        let lat = location[0];
+        let lon = location[1];
         //Scale back the range by 30%, since we can't drive in a straight line
         //This gives a reasonable estimation
         let cirRadius = (range * 0.70);
@@ -199,6 +226,7 @@ class Map extends Component {
             let accessDetail = station.access_days_time;
             let connectorTypes = station.ev_connector_types;
             let pricing = station.ev_pricing;
+            if (!pricing) {pricing = "N/A"}
             let lastConfirmed = station.date_last_confirmed;
 
             let htmlMsg = document.createElement("div");
@@ -221,13 +249,11 @@ class Map extends Component {
             group.addObject(stationMarker);
 
         });
-
         this.state.map.getViewModel().setLookAtData({bounds: group.getBoundingBox()});
-
     }
 
     componentWillUnmount() {
-        if (this.map) {this.map.dispose();}
+        if (this.state.map) {this.state.map.dispose();}
     }
 
     render() {
@@ -236,10 +262,8 @@ class Map extends Component {
                 <div ref={this.mapRef} style={{ height: window.innerHeight }}>
                 <DataBox displayRoute={this.displayRoute} getCgStations={this.getCgStations}/>
                 </div>
-
             );
     }
 
 }
-
 export default Map;

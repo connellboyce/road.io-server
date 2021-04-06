@@ -9,7 +9,7 @@ class DataBox extends React.Component {
         super(props);
 
         this.state = {
-            disabled : true,
+            disabled : false,
             carInfo: "",
             form: {
                 origin: {},
@@ -119,10 +119,10 @@ class DataBox extends React.Component {
         var carInfo = this.state.carInfo.split("/");
         var origin = this.state.form.origin;
         var destination = this.state.form.destination;
-        var currentCharge = this.state.form.currentCharge;
         var outletType = carInfo[0];
         var speedTable = carInfo[1];
         var maxCharge = carInfo[2];
+        var currentCharge = ((this.state.form.currentCharge / 100) * maxCharge);
         var chargingCurve = carInfo[3];
         var maxChargeAfterChargingStation = carInfo[4];
         var range = carInfo[5];
@@ -138,24 +138,26 @@ class DataBox extends React.Component {
         }
         ORIGIN_COORD_REQUEST.send();
 
-        const DESTINATION_COORD_REQUEST = new XMLHttpRequest();
-        DESTINATION_COORD_REQUEST.open("GET", BACKEND_API_ENDPOINT + "/autocomplete/"+destination+"/USA", false);
-        DESTINATION_COORD_REQUEST.onload = function() {
-            let response = JSON.parse(this.response);
-            destinationCoordResponse = response.items[0].position.lat + "," + response.items[0].position.lng;
+        if (this.state.disabled === true) {
+            const DESTINATION_COORD_REQUEST = new XMLHttpRequest();
+            DESTINATION_COORD_REQUEST.open("GET", BACKEND_API_ENDPOINT + "/autocomplete/"+destination+"/USA", false);
+            DESTINATION_COORD_REQUEST.onload = function() {
+                let response = JSON.parse(this.response);
+                destinationCoordResponse = response.items[0].position.lat + "," + response.items[0].position.lng;
+            }
+            DESTINATION_COORD_REQUEST.send();
         }
-        DESTINATION_COORD_REQUEST.send();
 
         if (this.state.disabled === false) {
-            var coordinates = origin.split(",");
-            const ROUTE_REQUEST = new XMLHttpRequest();
-            ROUTE_REQUEST.open("GET", "http://localhost:8787/api/stations/near/"+coordinates[0]+"/"+coordinates[1]+"/"+((range * 0.0006213712)/2), true);
+            var coordinates = originCoordResponse.split(",");
+            const ROUTE_REQUEST = new XMLHttpRequest();                   // Search within 100 miles, but it will max out at 20 charging stations
+            ROUTE_REQUEST.open("GET", BACKEND_API_ENDPOINT + "/stations/near/"+coordinates[0]+"/"+coordinates[1]+"/"+ 100, true);
             ROUTE_REQUEST.onload = function() {
                 routeResponse = JSON.parse(this.response);
                 //For dev. only
                 console.log(routeResponse);
 
-                lclProps.getCgStations(origin, range, routeResponse);
+                lclProps.getCgStations(coordinates, range, routeResponse);
             }
             ROUTE_REQUEST.send();
         }
@@ -239,19 +241,19 @@ class DataBox extends React.Component {
         inp.addEventListener("keydown", function(e) {
             var x = document.getElementById(this.id + "autocomplete-list");
             if (x) x = x.getElementsByTagName("div");
-            if (e.keyCode == 40) {
+            if (e.keyCode === 40) {
                 /*If the arrow DOWN key is pressed,
                 increase the currentFocus variable:*/
                 currentFocus++;
                 /*and and make the current item more visible:*/
                 addActive(x);
-            } else if (e.keyCode == 38) { //up
+            } else if (e.keyCode === 38) { //up
                 /*If the arrow UP key is pressed,
                 decrease the currentFocus variable:*/
                 currentFocus--;
                 /*and and make the current item more visible:*/
                 addActive(x);
-            } else if (e.keyCode == 13) {
+            } else if (e.keyCode === 13) {
                 /*If the ENTER key is pressed, prevent the form from being submitted,*/
                 e.preventDefault();
                 if (currentFocus > -1) {
@@ -324,7 +326,7 @@ class DataBox extends React.Component {
 
                     <h4>EV Specs</h4>
                     <label htmlFor="">Current State of Charge</label>
-                    <input type="text" name="currentCharge" id="currentCharge" placeholder="80" onChange={this.changeCharge}/>
+                    <input type="text" name="currentCharge" id="currentCharge" placeholder="80" onChange={this.changeCharge}/> <label>%</label>
 
 
                     <label id="makeLabel"> Make and Model </label>
@@ -333,6 +335,7 @@ class DataBox extends React.Component {
                         <option value="iec62196Type1Combo/110,0.165/60/0,50,9,52,12,54,15,54,18,54,21,54,24,55,27,55,30,55,33,37,36,37,39,37,42,23,45,23,48,23,51,16,54,16,57,10,60,4/60/383023.9"> Chevy Bolt 2017-2019</option>
                         <option value="tesla,iec62196Type1Combo/110,0.15/79/0,50,7.9,100,15.8,120,23.7,120,31.6,120,39.5,120,47.4,90,55.3,80,63.2,55,71.1,30,79,5/79/498896.6"> Tesla Model 3 Long Range</option>
                         <option value="iec62196Type1Combo/110,0.131/28/0,40,2.8,43,5.6,44,8.4,45,11.2,45,14,46,16.8,47,19.6,48,22.4,45,25.2,23,28,5/28/199558.7"> Hyundai Ioniq Electric</option>
+                        <option value="iec62196Type1Combo/110,0.164/64/0,40,6.4,70,12.8,72,19.2,73,25.6,74,32,76,38.4,57,44.8,58,51.2,24,57.6,22,64,10/64/415210.8"> Hyundai Kona Electric</option>
                     </select>
 
                     <button type="button" id = "submit" onClick={this.onSubmitForm}>Submit</button>
