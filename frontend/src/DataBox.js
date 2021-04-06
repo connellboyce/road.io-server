@@ -83,7 +83,7 @@ class DataBox extends React.Component {
         if (this.state.disabled === false) {
             var coordinates = origin.split(",");
             const ROUTE_REQUEST = new XMLHttpRequest();
-            ROUTE_REQUEST.open("GET", "http://localhost:8787/api/stations/near/"+coordinates[0]+"/"+coordinates[1]+"/"+"5", true);
+            ROUTE_REQUEST.open("GET", "http://localhost:8787/api/stations/near/"+coordinates[0]+"/"+coordinates[1]+"/"+((range * 0.0006213712)/2), true);
             ROUTE_REQUEST.onload = function() {
                 routeResponse = JSON.parse(this.response);
                 //For dev. only

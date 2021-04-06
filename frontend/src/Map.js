@@ -1,15 +1,9 @@
 import React, {Component} from 'react';
 import DataBox from './DataBox';
+import "./Map.css";
 
 class Map extends Component {
     mapRef = React.createRef();
-
-    // state = {
-    //     // The map instance to use during cleanup
-    //     map: null,
-    //     H: null,
-    //     ui: null
-    // };
 
     constructor(props) {
         super(props);
@@ -131,17 +125,14 @@ class Map extends Component {
 
         let lclState = this.state;
         //Clear map of existing objects
-        let existingObjs = this.state.map.getObjects(true);
+        this.state.map.removeObjects(this.state.map.getObjects());
 
-        if (existingObjs) { this.state.map.removeObjects(existingObjs); }
         //Place a range circle
-
-        let circle = lclState.map.addObject(new lclState.H.map.Circle(
+        let circle = this.state.map.addObject(new this.state.H.map.Circle(
             {lat:lat, lng:lon},
             cirRadius
 
         ));
-        this.state.map.getViewModel().setLookAtData({bounds: circle.getBoundingBox()});
 
         //Place charging stations
         var group = new this.state.H.map.Group();
@@ -162,16 +153,43 @@ class Map extends Component {
             }
 
             let stationMarker = new lclState.H.map.Marker(HERElocation);
-            let htmlMsg = "<div>station.station_name</div>";
+            let stationName = station.station_name;
+            let address = station.street_address;
+            let city = station.city;
+            let state = station.state;
+
+            let stationPhone = station.station_phone;
+            let accessDetail = station.access_days_time;
+            let connectorTypes = station.ev_connector_types;
+            let pricing = station.ev_pricing;
+            let lastConfirmed = station.date_last_confirmed;
+
+            let htmlMsg = document.createElement("div");
+            htmlMsg.id = "htmlMsg";
+
+            let header = document.createElement('h2');
+            header.innerText = stationName;
+            header.id = "header";
+            htmlMsg.appendChild(header);
+
+            let textNode = document.createTextNode(address + " " + city + ", " + state);
+            htmlMsg.appendChild(textNode);
+
+            let paragraph = document.createElement("p");
+            paragraph.id = "paragraph";
+            paragraph.innerText = "Phone: " + stationPhone + "\nAccess: " + accessDetail + "\nConnector(s): " + connectorTypes + "\nPricing: " + pricing + "\nLast Confirmed: " + lastConfirmed;
+            htmlMsg.appendChild(paragraph);
+
             stationMarker.setData(htmlMsg);
             group.addObject(stationMarker);
 
         });
 
+        this.state.map.getViewModel().setLookAtData({bounds: group.getBoundingBox()});
+
     }
 
     componentWillUnmount() {
-        // Cleanup after the map to avoid memory leaks when this component exits the page
         if (this.map) {this.map.dispose();}
     }
 
