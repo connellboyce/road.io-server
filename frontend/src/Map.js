@@ -70,6 +70,9 @@ class Map extends Component {
     }
 
     displayRoute(result) {
+        //Clear routes
+        let existingObjs = this.state.map.getObjects(true);
+        if (existingObjs) { this.state.map.removeObjects(existingObjs);}
         // ensure that at least one route was found
         if (result.routes.length) {
             //Info Bubble for charging stations
@@ -96,13 +99,37 @@ class Map extends Component {
 
                 // Create a marker for the start point:
                 let startMarker = new lclState.H.map.Marker(section.departure.place.location);
-                let htmlMsg = '<div><h2>This is a cool charging station right here!</h2></div>';
-                startMarker.setData(htmlMsg);
 
+                //Edit charging station pop up
+                let stationName = "";
+                let tempStationName = section.arrival.place.name;
+                if(tempStationName == undefined)
+                {
+                    stationName = "Charging Station";
+                }
+                else
+                {
+                    stationName = tempStationName;
+                }
+                let stationLocation = section.arrival.place.location.lat + ", " +
+                    section.arrival.place.location.lng;
+
+                let htmlMsg = document.createElement("div");
+                htmlMsg.id = "htmlMsg";
+                let header = document.createElement('h2');
+                header.innerText = stationName;
+                header.id = "header";
+                htmlMsg.appendChild(header);
+                let textNode = document.createTextNode(stationLocation);
+                htmlMsg.appendChild(textNode);
+
+
+                startMarker.setData(htmlMsg);
                 group.addObject(startMarker);
 
                 // Create a marker for the end point:
                 let endMarker = new lclState.H.map.Marker(section.arrival.place.location);
+               
                 endMarker.setData(htmlMsg);
                 group.addObject(endMarker);
 

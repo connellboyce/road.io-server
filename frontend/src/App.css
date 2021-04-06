@@ -5,6 +5,10 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+  height: 140px;
+  width: 140px;
+  position: relative;
+  top: 10px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -14,14 +18,14 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: floralwhite;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: darkblue;
 }
 
 .App-link {
@@ -36,24 +40,41 @@
     transform: rotate(360deg);
   }
 }
+h4
+{
+  font-family: Candara;
+}
+#introduction{
+  font-family: "Candara";
+font-size: xx-large;
+}
+#anxiety{
+  font-family: "Brush Script MT";
+  font-size: xxx-large;
+}
+#road{
+  font-family: "Candara";
+  font-size: 200px;
 
+}
 a.button1{
   display:inline-block;
   padding:0.35em 1.2em;
   border:0.1em solid #FFFFFF;
+  border-color: darkblue;
   margin:0 0.3em 0.3em 0;
-  border-radius:0.12em;
+  border-radius:0.25em;
   box-sizing: border-box;
   text-decoration:none;
-  font-family:'Roboto',sans-serif;
-  font-weight:300;
-  color:#FFFFFF;
+  font-family:"Candara";
+  font-weight:1000;
+  color: darkblue;
   text-align:center;
   transition: all 0.2s;
 }
 a.button1:hover{
-  color:#000000;
-  background-color:#FFFFFF;
+  color: white;
+  background-color:darkblue;
 }
 @media all and (max-width:30em){
   a.button1{
