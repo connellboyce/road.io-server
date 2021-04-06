@@ -36,18 +36,12 @@ It is important to note, the project will not run if the host does not have API 
 - Java 8
 - Spring Boot 2.4.3
 - Maven 3.6.3
-- Google Maps API
-- HERE API
 
 ### **3**. Dependencies
 - Spring Framework
-    - Starter Data JPA
-    - Starter Data Rest
     - Starter Web
-    - Starter Websocket
     - Starter Test
-- Other
-    - h2 Database
+    - WebFlux
     
 ### **4**. Features
 
