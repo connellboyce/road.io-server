@@ -5,7 +5,7 @@
     margin: 10px;
     padding: 10px;
     height: 13cm;
-    width: 12cm;
+    width: 13cm;
     z-index: 200;
     position:fixed;
     top:50px;
@@ -16,14 +16,19 @@
 }
 .DataBox form
 {
-    display: inline-table;
+    display: inline-block;
 }
 .DataBox h2{
     text-align: center;
     font-family: "Candara";
     margin: 0px;
 }
-
+#makeLabel
+{
+    display: block;
+    margin-left: 88px;
+    padding-top: 10px;
+}
 label
 {
     display: inline-block;
@@ -36,13 +41,18 @@ label
     display: flex;
     text-align: left;
     margin-top: 10px;
-    width: 230px;
+    width: 300px;
     height: 10px;
     font-size: 15px;
     padding: 5px;
     border-color: darkblue;
     color: darkblue;
     font-family: Candara;
+}
+#currentCharge
+{
+    width: 45px;
+    display: inline-block;
 }
 #checkbox
 {
@@ -61,7 +71,7 @@ label
     font-size: 16px;
     margin-top: 20px;
     font-family: Candara;
-
+    margin-left: 125px;
 }
 .DataBox-logo {
     height: 49vmin;
@@ -91,7 +101,7 @@ label
 .box
 {
     display: inline-block;
-    width: 125px;
+    width: 200px;
     height: 30px;
     border: 1px solid #999;
     font-size: 16px;

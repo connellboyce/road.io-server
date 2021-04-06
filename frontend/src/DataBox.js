@@ -324,9 +324,10 @@ class DataBox extends React.Component {
 
                     <h4>EV Specs</h4>
                     <label htmlFor="">Current State of Charge</label>
-                    <input type="text" name="currentCharge" placeholder="80" onChange={this.changeCharge}/>
+                    <input type="text" name="currentCharge" id="currentCharge" placeholder="80" onChange={this.changeCharge}/>
 
-                    <label htmlFor=""> Make and Model </label>
+
+                    <label id="makeLabel"> Make and Model </label>
                     <select className="box" onChange={this.changeFormValue}>
                         <option value=""></option>
                         <option value="iec62196Type1Combo/110,0.165/60/0,50,9,52,12,54,15,54,18,54,21,54,24,55,27,55,30,55,33,37,36,37,39,37,42,23,45,23,48,23,51,16,54,16,57,10,60,4/60/383023.9"> Chevy Bolt 2017-2019</option>
