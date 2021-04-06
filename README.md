@@ -43,6 +43,8 @@ It is important to note, the project will not run if the host does not have API 
 - Spring Framework
     - Starter Web
     - Starter Test
+    - WebFlux
+
     
 ### **4**. Features
 
