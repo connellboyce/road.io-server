@@ -2,6 +2,8 @@ import React from 'react';
 import "./DataBox.css";
 import logo from "./globe-png-9acqaaMTM.png";
 
+const BACKEND_API_ENDPOINT = "http://localhost:8787/api";
+
 class DataBox extends React.Component {
     constructor(props) {
         super(props);
@@ -13,6 +15,10 @@ class DataBox extends React.Component {
                 origin: {},
                 destination: {},
                 currentCharge: {}
+            },
+            suggestions: {
+                origin: {},
+                destination: {}
             }
         }
         this.onSubmitForm = this.onSubmitForm.bind(this);
@@ -20,10 +26,42 @@ class DataBox extends React.Component {
         this.changeOrigin = this.changeOrigin.bind(this);
         this.changeDestination = this.changeDestination.bind(this);
         this.changeCharge = this.changeCharge.bind(this);
+        this.toggleOriginSearch = this.toggleOriginSearch.bind(this);
+        this.toggleDestinationSearch = this.toggleDestinationSearch.bind(this);
+        this.autocomplete = this.autocomplete.bind(this);
     }
     HandleChange()
     {
         this.setState({disabled: !this.state.disabled})
+    }
+
+    toggleOriginSearch(value) {
+        let originFragment = value;
+        let originResponse = "";
+
+        const ORIGIN_SEARCH_REQUEST = new XMLHttpRequest();
+        ORIGIN_SEARCH_REQUEST.open("GET", BACKEND_API_ENDPOINT + "/autocomplete/"+originFragment.toString()+"/USA", false);
+        ORIGIN_SEARCH_REQUEST.onload = function() {
+            originResponse = JSON.parse(this.response);
+            console.log(originResponse);
+        }
+        ORIGIN_SEARCH_REQUEST.send();
+        return originResponse;
+
+    }
+
+    toggleDestinationSearch(value) {
+        let destinationFragment = value;
+        let destinationResponse = "";
+
+        const DESTINATION_SEARCH_REQUEST = new XMLHttpRequest();
+        DESTINATION_SEARCH_REQUEST.open("GET", BACKEND_API_ENDPOINT + "/autocomplete/"+destinationFragment+"/USA", false);
+        DESTINATION_SEARCH_REQUEST.onload = function() {
+            destinationResponse = JSON.parse(this.response);
+            console.log(destinationResponse);
+        }
+        DESTINATION_SEARCH_REQUEST.send();
+        return destinationResponse;
     }
 
     changeFormValue(e) {
@@ -44,6 +82,10 @@ class DataBox extends React.Component {
                 currentCharge: this.state.form.currentCharge
             }
         });
+        if (value != "" && value != null) {
+            let currentOriginComplete = this.toggleOriginSearch(value);
+            this.autocomplete(currentOriginComplete, true);
+        }
     }
 
     changeDestination(e) {
@@ -55,6 +97,10 @@ class DataBox extends React.Component {
                 currentCharge: this.state.form.currentCharge
             }
         });
+        if (value != "" && value != null) {
+            let currentDestinationComplete = this.toggleDestinationSearch(value);
+            this.autocomplete(currentDestinationComplete, false);
+        }
     }
 
     changeCharge(e) {
@@ -80,11 +126,30 @@ class DataBox extends React.Component {
         var chargingCurve = carInfo[3];
         var maxChargeAfterChargingStation = carInfo[4];
         var routeResponse;
+        var originCoordResponse = "";
+        var destinationCoordResponse = "";
+
+        const ORIGIN_COORD_REQUEST = new XMLHttpRequest();
+        ORIGIN_COORD_REQUEST.open("GET", BACKEND_API_ENDPOINT + "/autocomplete/"+origin+"/USA", false);
+        ORIGIN_COORD_REQUEST.onload = function() {
+            let response = JSON.parse(this.response);
+            originCoordResponse = response.items[0].position.lat + "," + response.items[0].position.lng;
+        }
+        ORIGIN_COORD_REQUEST.send();
+
+        const DESTINATION_COORD_REQUEST = new XMLHttpRequest();
+        DESTINATION_COORD_REQUEST.open("GET", BACKEND_API_ENDPOINT + "/autocomplete/"+destination+"/USA", false);
+        DESTINATION_COORD_REQUEST.onload = function() {
+            let response = JSON.parse(this.response);
+            destinationCoordResponse = response.items[0].position.lat + "," + response.items[0].position.lng;
+        }
+        DESTINATION_COORD_REQUEST.send();
+
         if (this.state.disabled === false) {
             this.props.getStations();
         } else if (this.state.disabled === true) {
             const ROUTE_REQUEST = new XMLHttpRequest();
-            ROUTE_REQUEST.open("GET", "http://localhost:8787/api/stations/along/"+origin+"/"+outletType+"/"+destination+"/"+speedTable+"/"+currentCharge+"/"+maxCharge+"/"+chargingCurve+"/"+maxChargeAfterChargingStation, true);
+            ROUTE_REQUEST.open("GET", BACKEND_API_ENDPOINT + "/stations/along/"+originCoordResponse+"/"+outletType+"/"+destinationCoordResponse+"/"+speedTable+"/"+currentCharge+"/"+maxCharge+"/"+chargingCurve+"/"+maxChargeAfterChargingStation, true);
             ROUTE_REQUEST.onload = function() {
                 routeResponse = JSON.parse(this.response);
                 console.log(routeResponse)
@@ -98,6 +163,121 @@ class DataBox extends React.Component {
 
     }
 
+    //From w3schools -> https://www.w3schools.com/howto/howto_js_autocomplete.asp
+    autocomplete(returnObject, isOrigin) {
+        let inp;
+        if (isOrigin == true) {
+            inp = document.getElementById("originInput");
+        } else {
+            inp = document.getElementById("destinationInput");
+        }
+
+        console.log(returnObject);
+        console.log(returnObject.items);
+        let arr = [];
+        for (let i=0; i < returnObject.items.length; i++) {
+            if (i>5) {
+                i = returnObject.items.length;
+            } else {
+                arr.push(returnObject.items[i].title);
+            }
+        }
+
+        /*the autocomplete function takes two arguments,
+        the text field element and an array of possible autocompleted values:*/
+        var currentFocus;
+        /*execute a function when someone writes in the text field:*/
+        inp.addEventListener("input", function(e) {
+            var a, b, i, val = this.value;
+            /*close any already open lists of autocompleted values*/
+            closeAllLists();
+            if (!val) { return false;}
+            currentFocus = -1;
+            /*create a DIV element that will contain the items (values):*/
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            /*append the DIV element as a child of the autocomplete container:*/
+            this.parentNode.appendChild(a);
+            /*for each item in the array...*/
+            for (i = 0; i < arr.length; i++) {
+                /*check if the item starts with the same letters as the text field value:*/
+                if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                    /*create a DIV element for each matching element:*/
+                    b = document.createElement("DIV");
+                    /*make the matching letters bold:*/
+                    b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                    b.innerHTML += arr[i].substr(val.length);
+                    /*insert a input field that will hold the current array item's value:*/
+                    b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                    /*execute a function when someone clicks on the item value (DIV element):*/
+                    b.addEventListener("click", function(e) {
+                        /*insert the value for the autocomplete text field:*/
+                        inp.value = this.getElementsByTagName("input")[0].value;
+                        /*close the list of autocompleted values,
+                        (or any other open lists of autocompleted values:*/
+                        closeAllLists();
+                    });
+                    a.appendChild(b);
+                }
+            }
+        });
+        /*execute a function presses a key on the keyboard:*/
+        inp.addEventListener("keydown", function(e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+                /*If the arrow DOWN key is pressed,
+                increase the currentFocus variable:*/
+                currentFocus++;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 38) { //up
+                /*If the arrow UP key is pressed,
+                decrease the currentFocus variable:*/
+                currentFocus--;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 13) {
+                /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    /*and simulate a click on the "active" item:*/
+                    if (x) x[currentFocus].click();
+                }
+            }
+        });
+        function addActive(x) {
+            /*a function to classify an item as "active":*/
+            if (!x) return false;
+            /*start by removing the "active" class on all items:*/
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            /*add class "autocomplete-active":*/
+            x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+            /*a function to remove the "active" class from all autocomplete items:*/
+            for (var i = 0; i < x.length; i++) {
+                x[i].classList.remove("autocomplete-active");
+            }
+        }
+        function closeAllLists(elmnt) {
+            /*close all autocomplete lists in the document,
+            except the one passed as an argument:*/
+            var x = document.getElementsByClassName("autocomplete-items");
+            for (var i = 0; i < x.length; i++) {
+                if (elmnt != x[i] && elmnt != inp) {
+                    x[i].parentNode.removeChild(x[i]);
+                }
+            }
+        }
+        /*execute a function when someone clicks in the document:*/
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
+        });
+    }
 
    render() {
 
@@ -112,14 +292,22 @@ class DataBox extends React.Component {
 
 
                     <label htmlFor="">Starting point</label>
-                    <input type="text" onChange={this.changeOrigin} name="startingPoint"
+                    <br/>
+                    <div className="autocomplete">
+                        <input id="originInput" type="text" onChange={this.changeOrigin} name="startingPoint"
                            placeholder="Pollock Road, University Park, PA"/>
-
+                    </div>
+                    <br/>
+                    <br/>
 
                     <label htmlFor="">Ending point</label>
                     <input type="checkbox" id="checkbox" onChange={this.HandleChange.bind(this)}/>
-                    <input type="text" onChange={this.changeDestination} name="endingPoint"
+                    <br/>
+                    <div className="autocomplete">
+                    <input id="destinationInput" type="text" onChange={this.changeDestination} name="endingPoint"
                            placeholder="Tampa, FL" disabled={(!this.state.disabled)}/>
+                    </div>
+                    <br/>
 
                     <h4>EV Specs</h4>
                     <label htmlFor="">Current State of Charge</label>
