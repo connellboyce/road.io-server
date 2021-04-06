@@ -12,3 +12,11 @@
     color: darkblue;
 }
 
+#paragraph
+{
+    font-size: 16px;
+    font-family: Candara;
+    color: darkblue;
+    white-space: pre-line;
+}
+

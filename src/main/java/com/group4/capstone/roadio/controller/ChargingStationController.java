@@ -16,8 +16,8 @@ public class ChargingStationController {
         return chargingStationService.getStationsAlongRoute(origin, outletType, destination, freeFlowSpeedTable, initialCharge, maxCharge, chargingCurve, maxChargeAfterChargingStation);
     }
 
-    @GetMapping("/near/{location}/{radius}")
-    public String getNearbyStations(@PathVariable("location") String location, @PathVariable("radius") String radius) {
-        return chargingStationService.getStationsNearMe(location, radius);
+    @GetMapping("/near/{latitude}/{longitude}/{radius}")
+    public String getNearbyStations(@PathVariable("latitude") String latitude, @PathVariable("longitude") String longitude, @PathVariable("radius") String radius) {
+        return chargingStationService.getStationsNearMe(latitude, longitude, radius);
     }
 }
