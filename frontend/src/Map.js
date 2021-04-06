@@ -71,8 +71,7 @@ class Map extends Component {
 
     displayRoute(result) {
         //Clear routes
-        let existingObjs = this.state.map.getObjects(true);
-        if (existingObjs) { this.state.map.removeObjects(existingObjs);}
+        this.state.map.removeObjects(this.state.map.getObjects());
         // ensure that at least one route was found
         if (result.routes.length) {
             //Info Bubble for charging stations
@@ -94,27 +93,27 @@ class Map extends Component {
 
                 // Create a polyline to display the route:
                 let routeLine = new lclState.H.map.Polyline(linestring, {
-                    style: { strokeColor: 'blue', lineWidth: 3 }
+                    style: {strokeColor: 'blue', lineWidth: 3}
                 });
 
                 // Create a marker for the start point:
                 let startMarker = new lclState.H.map.Marker(section.departure.place.location);
 
                 //Edit charging station pop up
+                if (section.departure.place.type == "chargingStation") {
+
+
                 let stationName = "";
                 let tempStationName = section.arrival.place.name;
-                if(tempStationName == undefined)
-                {
+                if (tempStationName == undefined) {
                     stationName = "Charging Station";
-                }
-                else
-                {
+                } else {
                     stationName = tempStationName;
                 }
                 let stationLocation = section.arrival.place.location.lat + ", " +
                     section.arrival.place.location.lng;
 
-                let htmlMsg = document.createElement("div");
+                var htmlMsg = document.createElement("div");
                 htmlMsg.id = "htmlMsg";
                 let header = document.createElement('h2');
                 header.innerText = stationName;
@@ -125,12 +124,23 @@ class Map extends Component {
 
 
                 startMarker.setData(htmlMsg);
+                }
+                else {
+                    startMarker.setData("Start.");
+                }
+
                 group.addObject(startMarker);
 
                 // Create a marker for the end point:
                 let endMarker = new lclState.H.map.Marker(section.arrival.place.location);
-               
-                endMarker.setData(htmlMsg);
+
+                if (section.arrival.place.type == "chargingStation") {
+                    endMarker.setData(htmlMsg);
+                }
+                else {
+                    endMarker.setData("End.");
+                }
+
                 group.addObject(endMarker);
 
                 lclState.map.addObject(routeLine);
