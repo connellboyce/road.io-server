@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/autocomplete")
 @CrossOrigin
 public class AutocompleteController {
-    @Autowired
-    AutocompleteService autocompleteService;
+    
+    private AutocompleteService autocompleteService;
+
+    public AutocompleteController(AutocompleteService autocompleteService) {
+        this.autocompleteService = autocompleteService;
+    }
 
     @GetMapping("/{partial}/{country}")
     public String complete(@PathVariable("partial") String partial, @PathVariable("country") String country) {
