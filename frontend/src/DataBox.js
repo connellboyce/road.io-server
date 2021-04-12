@@ -190,11 +190,13 @@ class DataBox extends React.Component {
         console.log(returnObject);
         console.log(returnObject.items);
         let arr = [];
-        for (let i=0; i < returnObject.items.length; i++) {
-            if (i>5) {
-                i = returnObject.items.length;
-            } else {
-                arr.push(returnObject.items[i].title);
+        if (returnObject.items != null || returnObject.items != "") {
+            for (let i = 0; i < returnObject.items.length; i++) {
+                if (i > 5) {
+                    i = returnObject.items.length;
+                } else {
+                    arr.push(returnObject.items[i].title);
+                }
             }
         }
 
