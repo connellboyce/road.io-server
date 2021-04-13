@@ -1,0 +1,1 @@
+mvn clean test site -DHERE_ACCESS_KEY_ID="here" -DNREL_ACCESS_KEY_ID="nrel" -DGOOGLE_ACCESS_KEY_ID="google"
