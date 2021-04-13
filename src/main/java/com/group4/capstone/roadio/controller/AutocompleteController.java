@@ -1,7 +1,6 @@
 package com.group4.capstone.roadio.controller;
 
 import com.group4.capstone.roadio.service.AutocompleteService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
