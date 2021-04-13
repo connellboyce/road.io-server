@@ -14,10 +14,10 @@ public class ChargingStationServiceImpl implements ChargingStationService {
     private final Logger logger = LoggerFactory.getLogger(ChargingStationServiceImpl.class);
     private final WebClient webClient;
 
-    @Value("${app.hereapi.key}:testMe")
+    @Value("${app.hereapi.key}")
     String hereKey;
 
-    @Value("${app.nrel.key}:testMe")
+    @Value("${app.nrel.key}]")
     private String nrelKey;
 
     public ChargingStationServiceImpl(WebClient.Builder webClientBuilder) {
