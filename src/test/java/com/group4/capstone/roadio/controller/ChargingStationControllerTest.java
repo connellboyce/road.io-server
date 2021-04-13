@@ -3,16 +3,12 @@ package com.group4.capstone.roadio.controller;
 import com.group4.capstone.roadio.service.ChargingStationService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
 class ChargingStationControllerTest {
 
     private ChargingStationService chargingStationService;
-
     private ChargingStationController controller;
 
     /**
