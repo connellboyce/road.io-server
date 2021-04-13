@@ -14,6 +14,9 @@ class ChargingStationServiceImplTest {
     private WebClient.Builder webClientBuilder;
     private WebClient webClient;
 
+    /**
+     * This tests that the URL is properly built upstream
+     */
     @Test
     void whenRoutingParametersArePresent_upstreamUrlIsProperlyBuilt() {
         String expectedURI = "https://router.hereapi.com/v8/routes?departureTime=any&origin=40.79358,-77.86056&ev[connectorTypes]=iec62196Type1Combo&transportMode=car&destination=41.88425,-87.63245&return=polyline&ev[freeFlowSpeedTable]=110,0.165&ev[makeReachable]=true&ev[initialCharge]=45&ev[maxCharge]=60&ev[chargingCurve]=0,50,9,52,12,54,15,54,18,54,21,54,24,55,27,55,30,55,33,37,36,37,39,37,42,23,45,23,48,23,51,16,54,16,57,10,60,4&ev[maxChargeAfterChargingStation]=60&apiKey=null";
@@ -58,6 +61,9 @@ class ChargingStationServiceImplTest {
         Assert.assertEquals(testResult, stationsAlongRoute);
     }
 
+    /**
+     * This tests that the URL is properly built upstream
+     */
     @Test
     void whenNearbyStationParametersArePresent_upstreamUrlIsProperlyBuilt() {
         String expectedURI = "https://developer.nrel.gov/api/alt-fuel-stations/v1/nearest.json?latitude=40.79358&longitude=-77.86056&radius=25&api_key=null&fuel_type=ELEC";
