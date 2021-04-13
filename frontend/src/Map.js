@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import DataBox from './DataBox';
 import "./Map.css";
-import {typeOf} from "uri-js";
 
 class Map extends Component {
     mapRef = React.createRef();
