@@ -200,9 +200,6 @@ class DataBox extends React.Component {
                     ROUTE_REQUEST.open("GET", BACKEND_API_ENDPOINT + "/stations/near/" + coordinates[0] + "/" + coordinates[1] + "/" + 100, true);
                     ROUTE_REQUEST.onload = function () {
                         routeResponse = JSON.parse(this.response);
-                        //For dev. only
-                        console.log(routeResponse);
-
                         lclProps.getCgStations(coordinates, range, routeResponse);
                     }
                     ROUTE_REQUEST.send();
@@ -211,9 +208,6 @@ class DataBox extends React.Component {
                     ROUTE_REQUEST.open("GET", BACKEND_API_ENDPOINT + "/stations/along/" + originCoordResponse + "/" + outletType + "/" + destinationCoordResponse + "/" + speedTable + "/" + currentCharge + "/" + maxCharge + "/" + chargingCurve + "/" + maxChargeAfterChargingStation, true);
                     ROUTE_REQUEST.onload = function () {
                         routeResponse = JSON.parse(this.response);
-                        //For dev. only
-                        console.log(routeResponse)
-
                         lclProps.displayRoute(routeResponse);
                     }
                     ROUTE_REQUEST.send();
@@ -222,7 +216,6 @@ class DataBox extends React.Component {
                 }
             }
         }
-
 
     //From w3schools -> https://www.w3schools.com/howto/howto_js_autocomplete.asp
     autocomplete(returnObject, isOrigin) {
@@ -352,8 +345,6 @@ class DataBox extends React.Component {
 
                     </div>
 
-
-
                     <label htmlFor="">Starting point</label>
                     <br/>
                     <div className="autocomplete">
@@ -377,7 +368,6 @@ class DataBox extends React.Component {
                     <input type="text" name="currentCharge" id="currentCharge" placeholder="80" onChange={this.changeCharge}
                            disabled={(!this.state.disabled)}/> <label>%</label>
 
-
                     <label id="makeLabel"> Make and Model </label>
                     <select className="box" id="makeModel" onChange={this.changeFormValue}>
                         <option value=""></option>
@@ -395,6 +385,5 @@ class DataBox extends React.Component {
 
     }
 }
-
 
 export default DataBox;

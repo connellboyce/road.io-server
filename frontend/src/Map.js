@@ -20,8 +20,8 @@ class Map extends Component {
     }
 
     componentDidMount() {
-        //Synchronous GET request to Spring Boot backend
-        //Requires the Spring Boot app to be running!
+        /*Synchronous GET request to Spring Boot backend
+        Requires the Spring Boot app to be running!*/
         var data = "";
         const REQUEST = new XMLHttpRequest();
         REQUEST.open("GET", "http://localhost:8787/secrets/here",false);
@@ -52,13 +52,8 @@ class Map extends Component {
             }
         );
 
-        // MapEvents enables the event system
-        // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
-        // This variable is unused and is present for explanatory purposes - HERE
-        const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
-
-        // Create the default UI components to allow the user to interact with them
-        // Important for Info bubbles
+        /*Create the default UI components to allow the user to interact with them
+         Important for Info bubbles */
         const ui = H.ui.UI.createDefault(map, defaultLayers);
 
         this.setState({ ui });
@@ -119,7 +114,6 @@ class Map extends Component {
                         let textNode = document.createTextNode(stationLocation);
                         htmlMsg.appendChild(textNode);
 
-
                         startMarker.setData(htmlMsg);
                     } else {
                         let htmlMsg = document.createElement("div");
@@ -133,8 +127,8 @@ class Map extends Component {
 
                     group.addObject(startMarker);
 
-                    // Create a marker for the end point:
-                    // This process has to be done for both the section.departure and section.arrival, or the 1st charging station will be missing.
+                    /*Create a marker for the end point:
+                    This process has to be done for both the section.departure and section.arrival, or the 1st charging station will be missing.*/
                     let endMarker = new lclState.H.map.Marker(section.arrival.place.location);
 
                     if (section.arrival.place.type == "chargingStation") {
@@ -171,7 +165,7 @@ class Map extends Component {
 
                     lclState.map.addObject(routeLine);
 
-                    // Set the map's viewport to make the whole route visible:
+                    // Set the map's viewport to zoom into the route:
                     lclState.map.getViewModel().setLookAtData({bounds: routeLine.getBoundingBox()});
                 });
             } else {
