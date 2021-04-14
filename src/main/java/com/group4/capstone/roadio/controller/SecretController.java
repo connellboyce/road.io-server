@@ -1,6 +1,6 @@
 package com.group4.capstone.roadio.controller;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.group4.capstone.roadio.config.RoadioProperties;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,23 +11,34 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 public class SecretController {
 
-    @Value("${app.hereapi.key}")
-    private String hereAPIKey;
+    private final RoadioProperties properties;
 
-    @Value("${app.googleapi.key}")
-    private String googleAPIKey;
-
-    @Value("${app.nrel.key}")
-    private String nrelKey;
-
-    @GetMapping("/here")
-    public String getHereKey() {
-        return hereAPIKey;
+    /**
+     * Controller constructor
+     *
+     * @param properties Field injected values
+     */
+    public SecretController(RoadioProperties properties) {
+        this.properties = properties;
     }
 
-    @GetMapping("/google")
-    public String getGoogleAPIKey() { return googleAPIKey; }
+    /**
+     * Allows retrieval of the key for the HERE API from the program
+     *
+     * @return environment variable value of HERE_ACCESS_KEY_ID
+     */
+    @GetMapping("/here")
+    public String getHereKey() {
+        return properties.getHereApiKey();
+    }
 
+    /**
+     * Allows retrieval of the key for the NREL API from the program
+     *
+     * @return environment variable value of NREL_ACCESS_KEY_ID
+     */
     @GetMapping("/nrel")
-    public String getNrelKey() { return nrelKey; }
+    public String getNrelKey() {
+        return properties.getNrelApiKey();
+    }
 }
