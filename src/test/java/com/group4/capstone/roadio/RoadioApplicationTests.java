@@ -13,7 +13,9 @@ class RoadioApplicationTests {
 	@Autowired
 	private WebApplicationContext context;
 
-
+	/**
+	 * Test for context loading
+	 */
 	@Test
 	void contextLoads() {
 		assertThat(context).isNotNull();
