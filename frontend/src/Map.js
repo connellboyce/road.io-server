@@ -64,7 +64,6 @@ class Map extends Component {
         this.setState({ ui });
         this.setState({ map });
         this.setState({ H });
-
     }
 
     displayRoute(result) {
@@ -230,7 +229,7 @@ class Map extends Component {
             let accessDetail = station.access_days_time;
             let connectorTypes = station.ev_connector_types;
             let pricing = station.ev_pricing;
-            if (!pricing) {pricing = "N/A"}
+            if (!pricing) {pricing = "N/A";}
             let lastConfirmed = station.date_last_confirmed;
 
             let htmlMsg = document.createElement("div");

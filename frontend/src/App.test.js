@@ -1,8 +1,18 @@
-import { render, screen } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+//Basic tests for main page
+test('Globe and text present', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
+  const titleElement = screen.getByText(/Anxiety-free/i);
+  expect(titleElement).toBeInTheDocument();
+
+  const animationElement = screen.getByAltText(/logo/i)
+  expect(animationElement).toBeInTheDocument();
+});
+
+test('Renders get started button', () => {
+  render(<App />);
+  const linkElement = screen.getByText(/Get started/i);
   expect(linkElement).toBeInTheDocument();
 });
