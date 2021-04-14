@@ -52,6 +52,8 @@ class Map extends Component {
             }
         );
 
+        //Enable moving the map and zooming
+        const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
         /*Create the default UI components to allow the user to interact with them
          Important for Info bubbles */
         const ui = H.ui.UI.createDefault(map, defaultLayers);

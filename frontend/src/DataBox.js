@@ -48,7 +48,6 @@ class DataBox extends React.Component {
         ORIGIN_SEARCH_REQUEST.open("GET", BACKEND_API_ENDPOINT + "/autocomplete/"+originFragment.toString()+"/USA", false);
         ORIGIN_SEARCH_REQUEST.onload = function() {
             originResponse = JSON.parse(this.response);
-            console.log(originResponse);
         }
         ORIGIN_SEARCH_REQUEST.send();
         return originResponse;
@@ -63,7 +62,6 @@ class DataBox extends React.Component {
         DESTINATION_SEARCH_REQUEST.open("GET", BACKEND_API_ENDPOINT + "/autocomplete/"+destinationFragment+"/USA", false);
         DESTINATION_SEARCH_REQUEST.onload = function() {
             destinationResponse = JSON.parse(this.response);
-            console.log(destinationResponse);
         }
         DESTINATION_SEARCH_REQUEST.send();
         return destinationResponse;
@@ -126,22 +124,18 @@ class DataBox extends React.Component {
         if(origin == null || origin == "" || origin == "[object Object]")
         {
             errors.push(" Please enter a valid starting point ");
-            console.log("Invalid origin");
         }
         if((this.state.disabled)&&(destination == null || destination == "" || destination == "[object Object]"))
         {
             errors.push(" Please enter a valid ending point ");
-            console.log("Invalid ending point");
         }
         if((this.state.disabled)&&(currentCharge == null || (!(currentCharge > 0 && currentCharge < 100)) || currentCharge == ""))
         {
             errors.push(" Please enter a valid current charge ");
-            console.log("Invalid current charge");
         }
         if(dropdown == null || dropdown == "")
         {
             errors.push("Please select a car type ");
-            console.log("Car type not selected");
         }
         return errors;
     }
@@ -168,7 +162,6 @@ class DataBox extends React.Component {
         if((this.handleValidation(this.state.form.origin, this.state.form.destination, this.state.form.currentCharge,
             document.getElementById("makeModel").value).length != 0)) //errors are present do not run requests
         {
-            console.log("Cannot run")
             window.alert(this.handleValidation(this.state.form.origin, this.state.form.destination, this.state.form.currentCharge,
                 document.getElementById("makeModel").value));
         }
@@ -211,8 +204,6 @@ class DataBox extends React.Component {
                         lclProps.displayRoute(routeResponse);
                     }
                     ROUTE_REQUEST.send();
-                } else {
-                    console.log("State error for variable: disabled");
                 }
             }
         }
@@ -226,8 +217,6 @@ class DataBox extends React.Component {
             inp = document.getElementById("destinationInput");
         }
 
-        console.log(returnObject);
-        console.log(returnObject.items);
         let arr = [];
         if (returnObject.items != null || returnObject.items != "") {
             for (let i = 0; i < returnObject.items.length; i++) {
