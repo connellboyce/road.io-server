@@ -24,6 +24,7 @@ public class SecretController {
 
     /**
      * Allows retrieval of the key for the HERE API from the program
+     *
      * @return environment variable value of HERE_ACCESS_KEY_ID
      */
     @GetMapping("/here")
@@ -33,6 +34,7 @@ public class SecretController {
 
     /**
      * Allows retrieval of the key for the NREL API from the program
+     *
      * @return environment variable value of NREL_ACCESS_KEY_ID
      */
     @GetMapping("/nrel")

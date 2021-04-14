@@ -19,14 +19,14 @@ class ChargingStationControllerTest {
         chargingStationService = mock(ChargingStationService.class);
         controller = new ChargingStationController(chargingStationService);
 
-        String origin="40.79358,-77.86056";
-        String chargerType="iec62196Type1Combo";
-        String destination="41.88425,-87.63245";
-        String speedTable="110,0.165";
-        String currentCharge="45";
-        String maxCharge="60";
-        String chargingCurve="0,50,9,52,12,54,15,54,18,54,21,54,24,55,27,55,30,55,33,37,36,37,39,37,42,23,45,23,48,23,51,16,54,16,57,10,60,4";
-        String maxChargeAfterStation="60";
+        String origin = "40.79358,-77.86056";
+        String chargerType = "iec62196Type1Combo";
+        String destination = "41.88425,-87.63245";
+        String speedTable = "110,0.165";
+        String currentCharge = "45";
+        String maxCharge = "60";
+        String chargingCurve = "0,50,9,52,12,54,15,54,18,54,21,54,24,55,27,55,30,55,33,37,36,37,39,37,42,23,45,23,48,23,51,16,54,16,57,10,60,4";
+        String maxChargeAfterStation = "60";
         String testResult = "{\"routes\": []}";
 
         doReturn(testResult).when(chargingStationService).getStationsAlongRoute(origin, chargerType, destination, speedTable, currentCharge, maxCharge, chargingCurve, maxChargeAfterStation);

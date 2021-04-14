@@ -12,6 +12,7 @@ public class ChargingStationController {
 
     /**
      * Controller constructor
+     *
      * @param chargingStationService Charging Station Service interface to handle logic
      */
     public ChargingStationController(ChargingStationService chargingStationService) {
@@ -21,13 +22,13 @@ public class ChargingStationController {
     /**
      * Finds the proper routing to keep an electric vehicle charged during long distance drives
      *
-     * @param origin starting point
-     * @param outletType plug type for the specified electric vehicle
-     * @param destination ending point
-     * @param freeFlowSpeedTable table of how much energy the vehicle will consume at a given speed
-     * @param initialCharge current state of vehicle's charge
-     * @param maxCharge max potential charge of the vehicle
-     * @param chargingCurve table of how fast the vehicle will charge at the station
+     * @param origin                        starting point
+     * @param outletType                    plug type for the specified electric vehicle
+     * @param destination                   ending point
+     * @param freeFlowSpeedTable            table of how much energy the vehicle will consume at a given speed
+     * @param initialCharge                 current state of vehicle's charge
+     * @param maxCharge                     max potential charge of the vehicle
+     * @param chargingCurve                 table of how fast the vehicle will charge at the station
      * @param maxChargeAfterChargingStation state of charge the vehicle will have after each stop
      * @return JSON of routing information from origin to destination with charging stations included
      */
@@ -39,9 +40,9 @@ public class ChargingStationController {
     /**
      * Finds the closest stations to a specified location
      *
-     * @param latitude origin latitude
+     * @param latitude  origin latitude
      * @param longitude origin longitude
-     * @param radius radius around the vehicle to search within
+     * @param radius    radius around the vehicle to search within
      * @return JSON of local charging station information
      */
     @GetMapping("/near/{latitude}/{longitude}/{radius}")

@@ -14,9 +14,12 @@ public class AutocompleteServiceImpl implements AutocompleteService {
      * Service Constructor
      *
      * @param webClientBuilder builder for the WebFLux WebClient
-     * @param properties system variables
+     * @param properties       system variables
      */
-    public AutocompleteServiceImpl(WebClient.Builder webClientBuilder, RoadioProperties properties) { this.webClient = webClientBuilder.build(); this.properties = properties; }
+    public AutocompleteServiceImpl(WebClient.Builder webClientBuilder, RoadioProperties properties) {
+        this.webClient = webClientBuilder.build();
+        this.properties = properties;
+    }
 
     /**
      * Autocompletes a string based on a given partial and country
@@ -27,7 +30,7 @@ public class AutocompleteServiceImpl implements AutocompleteService {
      */
     @Override
     public String complete(String partial, String country) {
-        String url = "https://autosuggest.search.hereapi.com/v1/autosuggest?q="+partial.replace(" ", "+")+"&at=40.599830,-97.120535&in=countryCode:"+country+"&apiKey="+properties.getHereApiKey();
+        String url = "https://autosuggest.search.hereapi.com/v1/autosuggest?q=" + partial.replace(" ", "+") + "&at=40.599830,-97.120535&in=countryCode:" + country + "&apiKey=" + properties.getHereApiKey();
         return webClient.get()
                 .uri(url)
                 .retrieve()

@@ -6,8 +6,8 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 class ChargingStationServiceImplTest {
 
@@ -23,14 +23,14 @@ class ChargingStationServiceImplTest {
     void whenRoutingParametersArePresent_upstreamUrlIsProperlyBuilt() {
         String expectedURI = "https://router.hereapi.com/v8/routes?departureTime=any&origin=40.79358,-77.86056&ev[connectorTypes]=iec62196Type1Combo&transportMode=car&destination=41.88425,-87.63245&return=polyline&ev[freeFlowSpeedTable]=110,0.165&ev[makeReachable]=true&ev[initialCharge]=45&ev[maxCharge]=60&ev[chargingCurve]=0,50,9,52,12,54,15,54,18,54,21,54,24,55,27,55,30,55,33,37,36,37,39,37,42,23,45,23,48,23,51,16,54,16,57,10,60,4&ev[maxChargeAfterChargingStation]=60&apiKey=hereKey";
 
-        String origin="40.79358,-77.86056";
-        String chargerType="iec62196Type1Combo";
-        String destination="41.88425,-87.63245";
-        String speedTable="110,0.165";
-        String currentCharge="45";
-        String maxCharge="60";
-        String chargingCurve="0,50,9,52,12,54,15,54,18,54,21,54,24,55,27,55,30,55,33,37,36,37,39,37,42,23,45,23,48,23,51,16,54,16,57,10,60,4";
-        String maxChargeAfterStation="60";
+        String origin = "40.79358,-77.86056";
+        String chargerType = "iec62196Type1Combo";
+        String destination = "41.88425,-87.63245";
+        String speedTable = "110,0.165";
+        String currentCharge = "45";
+        String maxCharge = "60";
+        String chargingCurve = "0,50,9,52,12,54,15,54,18,54,21,54,24,55,27,55,30,55,33,37,36,37,39,37,42,23,45,23,48,23,51,16,54,16,57,10,60,4";
+        String maxChargeAfterStation = "60";
         String testResult = "{\"routes\": []}";
 
         webClientBuilder = mock(WebClient.Builder.class);
@@ -50,7 +50,7 @@ class ChargingStationServiceImplTest {
         doReturn(stringMono).when(webClientRetrieve).bodyToMono(String.class);
         doReturn(testResult).when(stringMono).block();
 
-        chargingStationService = new ChargingStationServiceImpl(webClientBuilder,properties);
+        chargingStationService = new ChargingStationServiceImpl(webClientBuilder, properties);
         verify(webClientBuilder, times(1)).build();
 
         doReturn("hereKey").when(properties).getHereApiKey();

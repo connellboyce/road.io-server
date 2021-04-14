@@ -17,8 +17,8 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 @ConfigurationPropertiesScan("com.group4.capstone.roadio.config")
 public class RoadioApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(RoadioApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(RoadioApplication.class, args);
+    }
 
 }

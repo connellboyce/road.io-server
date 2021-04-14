@@ -5,7 +5,6 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 class AutocompleteControllerTest {
 
@@ -20,8 +19,8 @@ class AutocompleteControllerTest {
         autocompleteService = mock(AutocompleteService.class);
         controller = new AutocompleteController(autocompleteService);
 
-        String partial="747 E Be";
-        String country="USA";
+        String partial = "747 E Be";
+        String country = "USA";
         String testResult = "{\"completed\": []}";
 
         doReturn(testResult).when(autocompleteService).complete(partial, country);

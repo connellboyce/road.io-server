@@ -24,8 +24,8 @@ class Map extends Component {
         Requires the Spring Boot app to be running!*/
         var data = "";
         const REQUEST = new XMLHttpRequest();
-        REQUEST.open("GET", "http://localhost:8787/secrets/here",false);
-        REQUEST.onload = function() {
+        REQUEST.open("GET", "http://localhost:8787/secrets/here", false);
+        REQUEST.onload = function () {
             //Parse JSON
             data = this.response;
         }
@@ -46,7 +46,7 @@ class Map extends Component {
             defaultLayers.vector.normal.map,
             {
                 // Center map over eastern U.S.
-                center: { lat: 40, lng: -77 },
+                center: {lat: 40, lng: -77},
                 zoom: 4,
                 pixelRatio: window.devicePixelRatio || 1,
             }
@@ -58,9 +58,9 @@ class Map extends Component {
          Important for Info bubbles */
         const ui = H.ui.UI.createDefault(map, defaultLayers);
 
-        this.setState({ ui });
-        this.setState({ map });
-        this.setState({ H });
+        this.setState({ui});
+        this.setState({map});
+        this.setState({H});
     }
 
     displayRoute(result) {
@@ -192,9 +192,8 @@ class Map extends Component {
 
         //Place a range circle
         let circle = this.state.map.addObject(new this.state.H.map.Circle(
-            {lat:lat, lng:lon},
+            {lat: lat, lng: lon},
             cirRadius
-
         ));
 
         //Place charging stations
@@ -202,7 +201,7 @@ class Map extends Component {
         this.state.map.addObject(group);
         group.addEventListener('tap', function (evt) {
 
-            var bubble =  new lclState.H.ui.InfoBubble(evt.target.getGeometry(), {
+            var bubble = new lclState.H.ui.InfoBubble(evt.target.getGeometry(), {
                 content: evt.target.getData()
             });
             lclState.ui.addBubble(bubble);
@@ -225,7 +224,9 @@ class Map extends Component {
             let accessDetail = station.access_days_time;
             let connectorTypes = station.ev_connector_types;
             let pricing = station.ev_pricing;
-            if (!pricing) {pricing = "N/A";}
+            if (!pricing) {
+                pricing = "N/A";
+            }
             let lastConfirmed = station.date_last_confirmed;
 
             let htmlMsg = document.createElement("div");
@@ -252,17 +253,20 @@ class Map extends Component {
     }
 
     componentWillUnmount() {
-        if (this.state.map) {this.state.map.dispose();}
+        if (this.state.map) {
+            this.state.map.dispose();
+        }
     }
 
     render() {
-        const { error, isLoaded, hereKey } = this.state;
+        const {error, isLoaded, hereKey} = this.state;
         return (
-            <div ref={this.mapRef} style={{ height: window.innerHeight }}>
+            <div ref={this.mapRef} style={{height: window.innerHeight}}>
                 <DataBox displayRoute={this.displayRoute} getCgStations={this.getCgStations}/>
             </div>
         );
     }
 
 }
+
 export default Map;

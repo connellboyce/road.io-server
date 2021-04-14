@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/autocomplete")
 @CrossOrigin
 public class AutocompleteController {
-    
+
     private AutocompleteService autocompleteService;
 
     /**

@@ -10,14 +10,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class RoadioApplicationTests {
 
-	@Autowired
-	private WebApplicationContext context;
+    @Autowired
+    private WebApplicationContext context;
 
-	/**
-	 * Test for context loading
-	 */
-	@Test
-	void contextLoads() {
-		assertThat(context).isNotNull();
-	}
+    /**
+     * Test for context loading
+     */
+    @Test
+    void contextLoads() {
+        assertThat(context).isNotNull();
+    }
 }

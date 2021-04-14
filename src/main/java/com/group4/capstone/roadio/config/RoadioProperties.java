@@ -9,6 +9,7 @@ public class RoadioProperties {
 
     /**
      * Method to retrieve environment variable API key for HERE API
+     *
      * @return HERE API Key
      */
     public String getHereApiKey() {
@@ -17,6 +18,7 @@ public class RoadioProperties {
 
     /**
      * Method to import the environment variable for HERE API Key
+     *
      * @param hereApiKey environment variable HERE_ACCESS_KEY_ID
      */
     public void setHereApiKey(String hereApiKey) {
@@ -25,6 +27,7 @@ public class RoadioProperties {
 
     /**
      * Method to retrieve environment variable API key for NREL API
+     *
      * @return NREL API Key
      */
     public String getNrelApiKey() {
@@ -33,6 +36,7 @@ public class RoadioProperties {
 
     /**
      * Method to import the environment variable for NREL API Key
+     *
      * @param nrelApiKey environment variable NREL_ACCESS_KEY_ID
      */
     public void setNrelApiKey(String nrelApiKey) {
