@@ -1,6 +1,6 @@
 package com.group4.capstone.roadio.controller;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.group4.capstone.roadio.config.RoadioProperties;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,23 +11,19 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 public class SecretController {
 
-    @Value("${app.hereapi.key}")
-    private String hereAPIKey;
+    private final RoadioProperties properties;
 
-    @Value("${app.googleapi.key}")
-    private String googleAPIKey;
-
-    @Value("${app.nrel.key}")
-    private String nrelKey;
+    public SecretController(RoadioProperties properties) {
+        this.properties = properties;
+    }
 
     @GetMapping("/here")
     public String getHereKey() {
-        return hereAPIKey;
+        return properties.getHereApiKey();
     }
 
-    @GetMapping("/google")
-    public String getGoogleAPIKey() { return googleAPIKey; }
-
     @GetMapping("/nrel")
-    public String getNrelKey() { return nrelKey; }
+    public String getNrelKey() {
+        return properties.getNrelApiKey();
+    }
 }

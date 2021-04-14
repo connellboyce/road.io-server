@@ -1,5 +1,6 @@
 package com.group4.capstone.roadio.service.implementation;
 
+import com.group4.capstone.roadio.config.RoadioProperties;
 import com.group4.capstone.roadio.service.ChargingStationService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -13,13 +14,14 @@ class ChargingStationServiceImplTest {
     private ChargingStationService chargingStationService;
     private WebClient.Builder webClientBuilder;
     private WebClient webClient;
+    private RoadioProperties properties;
 
     /**
      * This tests that the URL is properly built upstream
      */
     @Test
     void whenRoutingParametersArePresent_upstreamUrlIsProperlyBuilt() {
-        String expectedURI = "https://router.hereapi.com/v8/routes?departureTime=any&origin=40.79358,-77.86056&ev[connectorTypes]=iec62196Type1Combo&transportMode=car&destination=41.88425,-87.63245&return=polyline&ev[freeFlowSpeedTable]=110,0.165&ev[makeReachable]=true&ev[initialCharge]=45&ev[maxCharge]=60&ev[chargingCurve]=0,50,9,52,12,54,15,54,18,54,21,54,24,55,27,55,30,55,33,37,36,37,39,37,42,23,45,23,48,23,51,16,54,16,57,10,60,4&ev[maxChargeAfterChargingStation]=60&apiKey=null";
+        String expectedURI = "https://router.hereapi.com/v8/routes?departureTime=any&origin=40.79358,-77.86056&ev[connectorTypes]=iec62196Type1Combo&transportMode=car&destination=41.88425,-87.63245&return=polyline&ev[freeFlowSpeedTable]=110,0.165&ev[makeReachable]=true&ev[initialCharge]=45&ev[maxCharge]=60&ev[chargingCurve]=0,50,9,52,12,54,15,54,18,54,21,54,24,55,27,55,30,55,33,37,36,37,39,37,42,23,45,23,48,23,51,16,54,16,57,10,60,4&ev[maxChargeAfterChargingStation]=60&apiKey=hereKey";
 
         String origin="40.79358,-77.86056";
         String chargerType="iec62196Type1Combo";
@@ -33,6 +35,7 @@ class ChargingStationServiceImplTest {
 
         webClientBuilder = mock(WebClient.Builder.class);
         webClient = mock(WebClient.class);
+        properties = mock(RoadioProperties.class);
 
         WebClient.RequestHeadersUriSpec<?> webClientGet = mock(WebClient.RequestHeadersUriSpec.class);
         WebClient.RequestHeadersSpec<?> webClientUri = mock(WebClient.RequestHeadersSpec.class);
@@ -47,10 +50,13 @@ class ChargingStationServiceImplTest {
         doReturn(stringMono).when(webClientRetrieve).bodyToMono(String.class);
         doReturn(testResult).when(stringMono).block();
 
-        chargingStationService = new ChargingStationServiceImpl(webClientBuilder);
+        chargingStationService = new ChargingStationServiceImpl(webClientBuilder,properties);
         verify(webClientBuilder, times(1)).build();
 
+        doReturn("hereKey").when(properties).getHereApiKey();
         String stationsAlongRoute = chargingStationService.getStationsAlongRoute(origin, chargerType, destination, speedTable, currentCharge, maxCharge, chargingCurve, maxChargeAfterStation);
+        verify(properties, times(1)).getHereApiKey();
+
         verify(webClient, times(1)).get();
         verify(webClientGet, times(1)).uri(expectedURI);
         verify(webClientUri, times(1)).retrieve();
@@ -66,7 +72,7 @@ class ChargingStationServiceImplTest {
      */
     @Test
     void whenNearbyStationParametersArePresent_upstreamUrlIsProperlyBuilt() {
-        String expectedURI = "https://developer.nrel.gov/api/alt-fuel-stations/v1/nearest.json?latitude=40.79358&longitude=-77.86056&radius=25&api_key=null&fuel_type=ELEC";
+        String expectedURI = "https://developer.nrel.gov/api/alt-fuel-stations/v1/nearest.json?latitude=40.79358&longitude=-77.86056&radius=25&api_key=nrelKey&fuel_type=ELEC";
 
         String latitude = "40.79358";
         String longitude = "-77.86056";
@@ -75,6 +81,7 @@ class ChargingStationServiceImplTest {
 
         webClientBuilder = mock(WebClient.Builder.class);
         webClient = mock(WebClient.class);
+        properties = mock(RoadioProperties.class);
 
         WebClient.RequestHeadersUriSpec<?> webClientGet = mock(WebClient.RequestHeadersUriSpec.class);
         WebClient.RequestHeadersSpec<?> webClientUri = mock(WebClient.RequestHeadersSpec.class);
@@ -83,16 +90,20 @@ class ChargingStationServiceImplTest {
 
         doReturn(webClient).when(webClientBuilder).build();
 
+        chargingStationService = new ChargingStationServiceImpl(webClientBuilder, properties);
+
+        verify(webClientBuilder, times(1)).build();
+
+        doReturn("nrelKey").when(properties).getNrelApiKey();
+
         doReturn(webClientGet).when(webClient).get();
         doReturn(webClientUri).when(webClientGet).uri(expectedURI);
         doReturn(webClientRetrieve).when(webClientUri).retrieve();
         doReturn(stringMono).when(webClientRetrieve).bodyToMono(String.class);
         doReturn(testResult).when(stringMono).block();
 
-        chargingStationService = new ChargingStationServiceImpl(webClientBuilder);
-        verify(webClientBuilder, times(1)).build();
-
         String nearbyStations = chargingStationService.getStationsNearMe(latitude, longitude, radius);
+        verify(properties, times(1)).getNrelApiKey();
         verify(webClient, times(1)).get();
         verify(webClientGet, times(1)).uri(expectedURI);
         verify(webClientUri, times(1)).retrieve();
