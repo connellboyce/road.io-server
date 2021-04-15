@@ -28,3 +28,10 @@
 - Road.io utilizes WebFlux to make its API requests.
 - The .block() method is utilized to account for the non-reactive nature of the backend. This forces the backend to wait until it has a response or has timed out before attemping to return any values.
 - The WebFlux return casting is set to String as there is no current need to cast the responses to custom models. If the need were to arise, Road.io has the capacity to allow for this.
+
+### Testing
+- The backend is tested with a combination of Mockito and JUnit
+- These tests are checked for coverage using JaCoCo as a dependency in the pom.
+    - The projects resides at 94% test coverage.
+- When testing controllers, the tests mock a service, use a doReturn to give a mocked response when certain parameters are provided, and then will verify the number of times method(s) are called and ensure that the received response is the same as the expected.
+- When this Mockito is done, JUnit is used for Assert functions to check for things like notNull, equals, contains, and more.
