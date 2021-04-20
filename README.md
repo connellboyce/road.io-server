@@ -42,16 +42,16 @@ IST440W Capstone Project
 ### **4**. API Endpoints
 ##### Get routing with stations 
 ```http request
-GET https://roadio-backend.herokuapp.com/api/stations/along/{{origin}}/{{outletType}}/{{destination}}/{{freeFlowSpeedTable}}/{{initialCharge}}/{{maxCharge}}/{{chargingCurve}}/{{maxChargeAfterChargingStation}}
+GET /api/stations/along/{origin}/{outletType}/{destination}/{freeFlowSpeedTable}/{initialCharge}/{maxCharge}/{chargingCurve}/{maxChargeAfterChargingStation}
 ```
 ##### Get local stations
 ```http request
-GET https://roadio-backend.herokuapp.com/api/stations/near/{{latitude}}/{{longitude}}/{{radius}}
+GET /api/stations/near/{latitude}/{longitude}/{radius}
 ```
 
 ##### Autocomplete
 ```http request
-GET https://roadio-backend.herokuapp.com/api/autocomplete/{{partial}}/{{country}}
+GET /api/autocomplete/{partial}/{country}
 ```
 
 ### **5**. Developer Documentation
